@@ -526,14 +526,20 @@ class YiiMailer extends PHPMailer {
 	/**
 	 * Save message as eml file
 	 * @return boolean True if saved successfully, false otherwise
+	 * @throws CException
 	 */
 	public function save()
 	{
 		$filename = date('YmdHis') . '_' . uniqid() . '.eml';
 		$dir = Yii::getPathOfAlias($this->savePath);
-		//check if dir exists and is writable
-		if(!is_writable($dir))
-			throw new CException('Directory "'.$dir.'" does not exist or is not writable!');
+
+		if (!is_dir($dir)) {
+			if (false === @mkdir($dir, 0777, true) && !is_dir($dir)) {
+				throw new CException('Unable to create the directory "'.$dir.'"!');
+			}
+		} elseif (!is_writable($dir)) {
+			throw new CException('Directory "'.$dir.'" is not writable!');
+		}
 
 		try {
 			$file = fopen($dir . DIRECTORY_SEPARATOR . $filename,'w+');
