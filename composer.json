@@ -1,11 +1,13 @@
 {
-	"name": "rdewilde/yiimailer",
-	"description": "Yii extension for sending emails with layouts using PHPMailer",
-	"require": {
-        	"php": ">=5.0.0",
-		"phpmailer/phpmailer": "v5.2.6"
-	},
-	"autoload": {
-		"classmap": ["YiiMailer.php"]
-	}
+  "name": "stevad/yiimailer",
+  "description": "Yii extension for sending emails with layouts using PHPMailer",
+  "require": {
+    "php": ">=5.5.0",
+    "phpmailer/phpmailer": "5.2.*"
+  },
+  "autoload": {
+    "classmap": [
+      "YiiMailer.php"
+    ]
+  }
 }
