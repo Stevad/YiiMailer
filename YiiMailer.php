@@ -70,11 +70,17 @@ class YiiMailer extends PHPMailer
      */
     public function __construct($view = '', $data = [], $layout = '')
     {
+        // load config from CONFIG_FILE and merge with available application params
+        $config = require(Yii::getPathOfAlias('application.config') . DIRECTORY_SEPARATOR . self::CONFIG_FILE);
+
         //initialize config
         if (isset(Yii::app()->params[self::CONFIG_PARAMS])) {
-            $config = Yii::app()->params[self::CONFIG_PARAMS];
-        } else {
-            $config = require(Yii::getPathOfAlias('application.config') . DIRECTORY_SEPARATOR . self::CONFIG_FILE);
+            $customConfig = Yii::app()->params[self::CONFIG_PARAMS];
+            if (isset($customConfig['language'])) {
+                $config['language'] = CMap::mergeArray($config['language'], $customConfig['language']);
+                unset($customConfig['language']);
+            }
+            $config = CMap::mergeArray($config, $customConfig);
         }
         //set config
         $this->setConfig($config);
@@ -542,5 +548,4 @@ class YiiMailer extends PHPMailer
             return false;
         }
     }
-
 }
